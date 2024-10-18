@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { type Provider, type Group } from '../types';
 import '../styles/filters.css'
 
@@ -16,26 +15,24 @@ export const Filters = ({
   setSelectedFilters
 }: props) => {
 
-  useEffect(() => {
-  }, [selectedFilters]);
 
   const handleClick = (arg: Provider | Group) => {
-    selectedFilters && !selectedFilters?.find((el) => el.id === arg.id)
+    selectedFilters && !selectedFilters?.find((selectedFilter) => selectedFilter.id === arg.id)
       ? setSelectedFilters([...selectedFilters, arg])
       : setSelectedFilters([...selectedFilters.filter((el) => el.id !== arg.id)]) 
   }
 
   type filterProps = Group | Provider;
 
-  const Filter = (arg: filterProps) => {
+  const Filter = (clickedFilter: filterProps) => {
     return (
       <li
-        className={`menu-item ${!!selectedFilters?.find((el) => el.id === arg.id) ? 'active' : ''}`}>
+        className={`menu-item ${!!selectedFilters?.find((selectedFilter) => selectedFilter.id === clickedFilter.id) ? 'active' : ''}`}>
         <button
-          data-id={arg.id}
-          id={String(arg.id)}
-          onClick={() => handleClick(arg)}>
-          {arg.name}
+          data-id={clickedFilter.id}
+          id={String(clickedFilter.id)}
+          onClick={() => handleClick(clickedFilter)}>
+          {clickedFilter.name}
         </button>
       </li>
     )

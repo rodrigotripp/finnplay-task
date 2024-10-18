@@ -22,3 +22,16 @@ export const filteredData = (
     });
   });
 };
+
+
+export const reShapeData = (
+  res: DataType
+) => {
+  const groups = res.groups.map((group) => ({...group, id: group.id + 1000})) 
+  const response = {
+    games: res.games,
+    providers: res.providers,
+    groups: groups,
+  }
+  return response;
+}

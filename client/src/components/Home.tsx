@@ -2,8 +2,9 @@ import Grid from './Grid';
 import { useNavigate } from "react-router-dom";
 import Nav from './Nav';
 import { useEffect, useState } from 'react';
-import { DataType } from '../types';
+import { type DataType} from '../types';
 import withLoading from '../hoc/withLoader';
+import { reShapeData } from '../utils';
 
 type props = {
   loggedIn: boolean
@@ -17,16 +18,20 @@ const Home = (props: props) => {
     providers: [],
     groups: []
   });
-  const [isLoading] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:3080/all")
-      .then(r => r.json())
-      .then(r => {
-        setData(r);
-      });
-  },[isLoading]);
+      .then((res) => res.json())
+      .then((res: DataType) => {
+        return reShapeData(res);
+      })
+      .then((data) => {
+        setData(data)
+        setLoading(false);
+      })
+  }, [isLoading]);
 
   const onButtonClick = () => {
     if (loggedIn) {
@@ -42,7 +47,7 @@ const Home = (props: props) => {
   return (
     <div className="mainContainer">
       <Nav onButtonClick={onButtonClick} username={username} loggedIn={loggedIn}></Nav>
-      { loggedIn ? <GridWithLoading isLoading={isLoading} {...data}/> : '' }
+      {loggedIn ? <GridWithLoading isLoading={isLoading} {...data} /> : ''}
     </div>
   )
 }
