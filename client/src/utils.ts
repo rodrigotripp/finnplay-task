@@ -1,6 +1,6 @@
 import { type Group, type DataType, type Provider } from './types/index';
 
-function checkIfGameInGroup(group: Group, id: number) {
+function checkIfGameInFilter(group: Group, id: number) {
   return group.games?.includes(id);
 }
 
@@ -15,7 +15,7 @@ export const filteredData = (
   return data.games.filter((game) => {
     return selectedFilters.some((filter) => {
       if ('games' in filter) {
-        return checkIfGameInGroup(filter, game.id);
+        return checkIfGameInFilter(filter, game.id);
       } else {
         return filter.id === game.provider;
       }
